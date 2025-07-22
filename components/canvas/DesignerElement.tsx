@@ -15,7 +15,7 @@ const newElementCoordinates = (coord: Coordinate, dir: Direction): Coordinate =>
     case Direction.DOWN:
       return { xCoord: coord.xCoord, yCoord: coord.yCoord + 200 }
     case Direction.LEFT:
-      return { xCoord: coord.xCoord < 200 ? 0 : coord.xCoord - 200, yCoord: coord.yCoord}
+      return { xCoord: coord.xCoord < 200 ? 0 : coord.xCoord - 200, yCoord: coord.yCoord }
     case Direction.RIGHT:
       return { xCoord: coord.xCoord + 200, yCoord: coord.yCoord }
 
@@ -24,7 +24,68 @@ const newElementCoordinates = (coord: Coordinate, dir: Direction): Coordinate =>
   }
 }
 
-const arrowCoordinates
+const arrowCoordinates = (
+  source: Coordinate, sourceNode: NodeProps,
+  dest: Coordinate, destNode: NodeProps,
+  sourceDir: Direction, destDir: Direction
+): number[] => {
+  // 1
+  if (source.yCoord == dest.yCoord && sourceDir == Direction.RIGHT && destDir == Direction.LEFT) {
+    return [
+      source.xCoord + (sourceNode.width ?? 0), source.yCoord + (sourceNode.height ?? 0) / 2,
+      dest.xCoord, dest.yCoord + (destNode.height ?? 0) /2
+    ]
+  } 
+  // 2 
+  else if (source.yCoord == dest.yCoord && sourceDir == Direction.LEFT && destDir == Direction.RIGHT) {
+    return [
+      source.xCoord, source.yCoord + (sourceNode.height ?? 0) / 2 ,
+      dest.xCoord + (destNode.width ?? 0), dest.yCoord  + (sourceNode.height ?? 0) / 2 
+    ]
+  } 
+  // 3
+  else if (source.xCoord == dest.xCoord && sourceDir == Direction.DOWN && destDir == Direction.UP) {
+    return [
+      source.xCoord + (sourceNode.width ?? 0) / 2, source.yCoord + (sourceNode.height ?? 0) ,
+      dest.xCoord + (destNode.width ?? 0) / 2, dest.yCoord
+    ]
+  }
+  // 4
+  else if (source.xCoord == dest.xCoord && sourceDir == Direction.UP && destDir == Direction.DOWN) {
+    return [
+      source.xCoord + (sourceNode.width ?? 0) / 2, source.yCoord ,
+      dest.xCoord + (destNode.width ?? 0) / 2, dest.yCoord + (destNode.height ?? 0)
+    ]
+  }
+  // 5
+  else if (source.xCoord < dest.xCoord && source.yCoord < dest.yCoord && sourceDir == Direction.RIGHT && destDir == Direction.LEFT) {
+    return [
+      source.xCoord + (sourceNode.width ?? 0), source.yCoord + (sourceNode.height ?? 0) / 2 ,
+      (source.xCoord + dest.xCoord + (sourceNode.width ?? 0) ) / 2, source.yCoord + (sourceNode.height ?? 0) / 2,
+      (source.xCoord + dest.xCoord + (sourceNode.width ?? 0) ) / 2, dest.yCoord + (destNode.height ?? 0) / 2,
+      dest.xCoord , dest.yCoord + (destNode.height ?? 0) / 2,
+    ]
+  }
+  // 6
+  else if (source.xCoord < dest.xCoord && source.yCoord > dest.yCoord && sourceDir == Direction.RIGHT && destDir == Direction.LEFT) {
+    return [
+      source.xCoord + (sourceNode.width ?? 0), source.yCoord + (sourceNode.height ?? 0) / 2 ,
+      (source.xCoord + dest.xCoord + (sourceNode.width ?? 0) ) / 2, source.yCoord + (sourceNode.height ?? 0) / 2,
+      (source.xCoord + dest.xCoord + (sourceNode.width ?? 0) ) / 2, dest.yCoord + (destNode.height ?? 0) / 2,
+      dest.xCoord , dest.yCoord + (destNode.height ?? 0) / 2,
+    ]
+  }
+  // 7
+  else if (source.xCoord < dest.xCoord && source.yCoord > dest.yCoord && sourceDir == Direction.RIGHT && destDir == Direction.LEFT) {
+    return [
+      source.xCoord + (sourceNode.width ?? 0), source.yCoord + (sourceNode.height ?? 0) / 2 ,
+      (source.xCoord + dest.xCoord + (sourceNode.width ?? 0) ) / 2, source.yCoord + (sourceNode.height ?? 0) / 2,
+      (source.xCoord + dest.xCoord + (sourceNode.width ?? 0) ) / 2, dest.yCoord + (destNode.height ?? 0) / 2,
+      dest.xCoord , dest.yCoord + (destNode.height ?? 0) / 2,
+    ]
+  }
+  return [0, 0, 0, 0]
+}
 
 const DesignerElement = (elementProps: NodeProps) => {
   let content;

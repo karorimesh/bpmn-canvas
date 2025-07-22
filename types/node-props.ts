@@ -3,5 +3,7 @@ export type NodeProps = {
   name: string,
   shape: BpmnShapes,
   linkTo: number | null,
-  coord: number[] | null
+  coord: number[] | null,
+  width: number | null,
+  height: number | null,
 }
